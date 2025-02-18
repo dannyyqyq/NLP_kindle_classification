@@ -1,0 +1,10 @@
+pandas
+numpy
+streamlit
+logger
+dill
+pre-commit
+gensim
+nlkt
+-e .
+ # automatic trigger setup.py
