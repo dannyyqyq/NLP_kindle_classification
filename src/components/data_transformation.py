@@ -85,11 +85,8 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
 
-    def initiate_data_transformation(self):
+    def initiate_data_transformation(self, df):
         try:
-            logging.info("Reading dataset as dataframe")
-            df = pd.read_csv(self.data_transformation_config.raw_data_path)
-
             # Apply text preprocessing
             df = self.data_transformation(df)
             df = self.lemmatizer_transformation(df)
@@ -99,26 +96,17 @@ class DataTransformation:
             train_set.to_csv(
                 self.data_transformation_config.train_data_path,
                 index=False,
-                header=True,
             )
             logging.info(f"Train dataframe shape: {train_set.shape}")
-            test_set.to_csv(
-                self.data_transformation_config.test_data_path, index=False, header=True
-            )
+            test_set.to_csv(self.data_transformation_config.test_data_path, index=False)
             logging.info(f"Test dataframe shape: {test_set.shape}.")
             logging.info("Data ingestion process completed successfully.")
 
             return (
+                train_set,
+                test_set,
                 self.data_transformation_config.train_data_path,
                 self.data_transformation_config.test_data_path,
             )
         except Exception as e:
             raise CustomException(e, sys)
-
-        except Exception as e:
-            raise CustomException(e, sys)
-
-
-if __name__ == "__main__":
-    obj = DataTransformation()
-    obj.initiate_data_transformation()

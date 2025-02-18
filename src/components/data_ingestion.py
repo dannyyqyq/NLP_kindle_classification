@@ -4,14 +4,11 @@ from src.logger import logging
 from src.exception import CustomException
 import pandas as pd
 
-
 from dataclasses import dataclass
 
 
 @dataclass
 class DataIngestionConfig:
-    # train_data_path: str = os.path.join("artifacts", "train.csv")
-    # test_data_path: str = os.path.join("artifiacts", "test.csv")
     raw_data_path: str = os.path.join("artifacts", "data.csv")
     base_data_path: str = os.path.join("data", "all_kindle_review.csv")
 
@@ -39,11 +36,6 @@ class DataIngestion:
             df.to_csv(self.ingestion_config.raw_data_path, index=False)
             logging.info(f"Shape of raw data: {df.shape}")
             logging.info("Data ingestion process completed successfully.")
-            return self.ingestion_config.base_data_path
+            return df, self.ingestion_config.raw_data_path
         except Exception as e:
             raise CustomException(e, sys)
-
-
-if __name__ == "__main__":
-    obj = DataIngestion()
-    obj.initiate_data_ingestion()
