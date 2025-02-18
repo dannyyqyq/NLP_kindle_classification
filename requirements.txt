@@ -5,6 +5,8 @@ logger
 dill
 pre-commit
 gensim
-nlkt
+nltk
+bs4
+lxml
 -e .
  # automatic trigger setup.py
