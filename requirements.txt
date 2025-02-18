@@ -8,5 +8,7 @@ gensim
 nltk
 bs4
 lxml
+scikit-learn
+regex
 -e .
  # automatic trigger setup.py
