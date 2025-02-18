@@ -79,9 +79,7 @@ class ModelTrainer:
                 train_data_with_vecs,
                 word2vec_model,
             ) = ModelTrainer.training_dataset_Word2Vec(train_data)
-            test_data_with_vecs, _ = ModelTrainer.training_dataset_Word2Vec(
-                test_data
-            )  # We don't need Word2Vec model for test data
+            test_data_with_vecs, _ = ModelTrainer.training_dataset_Word2Vec(test_data)
 
             logging.info(f"train_data_with_vecs: {train_data_with_vecs.shape}")
             logging.info(f"test_data_with_vecs: {test_data_with_vecs.shape}")
