@@ -5,6 +5,15 @@ from src.utils import load_object
 from src.components.data_transformation import DataTransformation
 from src.exception import CustomException
 import numpy as np
+import nltk
+
+# Prep downloads for docker
+resources = ["stopwords", "wordnet"]
+for resource in resources:
+    try:
+        nltk.data.find(f"corpora/{resource}")
+    except LookupError:
+        nltk.download(resource, download_dir="/usr/local/nltk_data")
 
 # Paths to model artifacts
 MODEL_PATH = os.path.join("artifacts", "best_model.pkl")
