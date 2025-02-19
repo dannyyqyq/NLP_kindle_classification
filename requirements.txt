@@ -1,14 +1,14 @@
 pandas
 numpy
-streamlit
+streamlit==1.42.1
 logger
 dill
 pre-commit
-gensim
+gensim==4.3.3
 nltk
 bs4
 lxml
-scikit-learn
+scikit-learn==1.6.1
 regex
 -e .
  # automatic trigger setup.py
