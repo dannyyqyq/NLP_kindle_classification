@@ -7,13 +7,28 @@ from src.exception import CustomException
 import numpy as np
 import nltk
 
-# Prep downloads for docker
+# # Prep downloads for docker
+# resources = ["stopwords", "wordnet"]
+# for resource in resources:
+#     try:
+#         nltk.data.find(f"corpora/{resource}")
+#     except LookupError:
+# nltk.download(resource, download_dir="/usr/local/nltk_data")
+
+# Use a directory within your app's working directory
+nltk_data_path = os.path.join(os.getcwd(), "nltk_data")
+os.makedirs(nltk_data_path, exist_ok=True)
+
+# Set NLTK data path
+nltk.data.path.append(nltk_data_path)
+
+# Download both stopwords and wordnet if not already present
 resources = ["stopwords", "wordnet"]
 for resource in resources:
     try:
         nltk.data.find(f"corpora/{resource}")
     except LookupError:
-        nltk.download(resource, download_dir="/usr/local/nltk_data")
+        nltk.download(resource, download_dir=nltk_data_path)
 
 # Paths to model artifacts
 MODEL_PATH = os.path.join("artifacts", "best_model.pkl")
