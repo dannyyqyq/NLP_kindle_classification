@@ -10,5 +10,5 @@ bs4
 lxml
 scikit-learn
 regex
--e .
+ # -e .
  # automatic trigger setup.py
