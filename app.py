@@ -2,10 +2,9 @@ import streamlit as st
 import pandas as pd
 import os
 from src.utils import load_object
-from src.components.data_transformation import (
-    DataTransformation,
-)  # Assuming this is where your class is
+from src.components.data_transformation import DataTransformation
 from src.exception import CustomException
+import numpy as np
 
 # Paths to model artifacts
 MODEL_PATH = os.path.join("artifacts", "best_model.pkl")
@@ -13,7 +12,7 @@ WORD2VEC_MODEL_PATH = os.path.join("artifacts", "word2vec_model.pkl")
 
 
 # Load the model and Word2Vec model
-@st.cache_resource  # Cache the model to speed up app loading
+@st.cache_resource
 def load_models():
     model = load_object(MODEL_PATH)
     w2v_model = load_object(WORD2VEC_MODEL_PATH)
@@ -24,32 +23,28 @@ model, w2v_model = load_models()
 
 st.title("Kindle Review Sentiment Analysis")
 
-# Text input for user review
 review_text = st.text_area("Enter your review text here:", "")
 
 if st.button("Analyze"):
     if review_text:
-        # Use DataTransformation class for preprocessing
         data_transformer = DataTransformation()
 
-        # Create a DataFrame with the review text but without rating for now
-        df = pd.DataFrame(
-            [{"reviewText": review_text, "rating": 0}]
-        )  # Adding a dummy rating
+        df = pd.DataFrame([{"reviewText": review_text, "rating": 0}])  # Dummy rating
 
         try:
-            # Apply data transformation
             df_transformed = data_transformer.data_transformation(df.copy())
             df_transformed = data_transformer.lemmatizer_transformation(df_transformed)
 
-            # Convert review to features using Word2Vec (assuming 'reviewText' column after preprocessing)
-            words = [
-                word
-                for word in df_transformed["reviewText"].iloc[0].split()
-                if word in w2v_model.wv.index_to_key
-            ]
-            if words:
-                vector = w2v_model.wv[words].mean(axis=0)
+            # Using avgword2vec for feature conversion
+            def avg_word2vec(model, doc):
+                words = [word for word in doc.split() if word in model.wv.index_to_key]
+                if not words:
+                    return None  # Return None if no words are found
+                return np.mean([model.wv[word] for word in words], axis=0)
+
+            vector = avg_word2vec(w2v_model, df_transformed["reviewText"].iloc[0])
+
+            if vector is not None:
                 vector = vector.reshape(1, -1)  # Reshape for prediction
                 prediction = model.predict(vector)
 
