@@ -1,4 +1,4 @@
-# 📚 NLP Kindle Review Classification End-to-End Deployment Project
+# 📚 NLP Kindle Review Classification Project
 For more details, check out the [project repository on GitHub](https://github.com/dannyyqyq/NLP_kindle_classification).
 
 ## 🚀 Web Application
